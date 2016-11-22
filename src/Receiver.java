@@ -18,11 +18,6 @@ public class Receiver {
             
             //2. Wait for an incoming data
             echo("Server socket created. Waiting for incoming data...");
-            
-            //sock.receive(incoming);	
-            
-//            ByteArrayInputStream in = new ByteArrayInputStream(buffer);
-//            ObjectInputStream is = new ObjectInputStream(in);
              
             //communication loop
             while(true)
@@ -48,15 +43,25 @@ public class Receiver {
                 		"\nWindowSize: " + packet.WindowSize +
                 		"\nAckNum: " + packet.AckNum);
                 
-                byte[] data = incoming.getData();
-                String s = new String(data, 0, incoming.getLength());
-                 
-                //echo the details of incoming data - client ip : client port - client message
-                echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
-                 
-                s = "ACK" + s;
-                DatagramPacket dp = new DatagramPacket(s.getBytes() , s.getBytes().length , incoming.getAddress() , incoming.getPort());
-                sock.send(dp);	
+                ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
+                ObjectOutput oos = new ObjectOutputStream(baos);
+                
+                String message = "ACK packet";
+                Packet ACKpacket = new Packet(1, 0 + message.length(), message.length(), message, 5, 0);
+               
+                oos.flush();
+                oos.writeObject(ACKpacket);
+                oos.flush();
+                byte[] dataObject = baos.toByteArray();
+
+                DatagramPacket dp = new DatagramPacket(dataObject, dataObject.length, incoming.getAddress(), incoming.getPort());
+                
+                // Send the packet
+                sock.send(dp);
+                
+                //close input and output streams
+                oos.close();
+                is.close();
             }
         }
          
