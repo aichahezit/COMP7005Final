@@ -13,15 +13,41 @@ public class Receiver {
              
             //buffer to receive incoming data
             byte[] buffer = new byte[65536];
+            
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
-             
+            
             //2. Wait for an incoming data
             echo("Server socket created. Waiting for incoming data...");
+            
+            //sock.receive(incoming);	
+            
+//            ByteArrayInputStream in = new ByteArrayInputStream(buffer);
+//            ObjectInputStream is = new ObjectInputStream(in);
              
             //communication loop
             while(true)
             {
-                sock.receive(incoming);
+                sock.receive(incoming);	
+                
+                ByteArrayInputStream in = new ByteArrayInputStream(buffer);
+                ObjectInputStream is = new ObjectInputStream(in);
+                
+                Packet packet = null;
+                
+                try {
+					packet = (Packet)is.readObject();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                
+                echo(	"Packet Received\n==========\nPacket Type: " + packet.PacketType + 
+                		"\nSeqNum: " + packet.SeqNum +
+                		"\nPayloadLen: " + packet.PayloadLen +
+                		"\nData: " + packet.data +
+                		"\nWindowSize: " + packet.WindowSize +
+                		"\nAckNum: " + packet.AckNum);
+                
                 byte[] data = incoming.getData();
                 String s = new String(data, 0, incoming.getLength());
                  
@@ -30,7 +56,7 @@ public class Receiver {
                  
                 s = "ACK" + s;
                 DatagramPacket dp = new DatagramPacket(s.getBytes() , s.getBytes().length , incoming.getAddress() , incoming.getPort());
-                sock.send(dp);
+                sock.send(dp);	
             }
         }
          

@@ -32,6 +32,34 @@ public class Network {
     	int receiverPort = 7778, transmitterPort = 0;
     	InetAddress recvAddr = null, transAddr = null;
     	
+//    	try {
+//    		
+//			File file = new File("config.txt");
+//			FileReader fileReader = new FileReader(file);
+//			BufferedReader bufferedReader = new BufferedReader(fileReader);
+//			
+//			//read transmitter config info
+//			String line = bufferedReader.readLine();
+//			
+//			String[] splitted = line.split("\\s+");
+//			transmitterIP = splitted[0];
+//			echo(splitted[0]);
+//			transmitterPort = Integer.parseInt(splitted[1]);
+//			
+//			//read receiver config info
+//			line = bufferedReader.readLine();
+//			
+//			splitted = line.split("\\s+");
+//			receiverIP = splitted[0];
+//			receiverPort = Integer.parseInt(splitted[1]);
+//			
+//			fileReader.close();
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+    	
+    	//create IP address objects from config file info
 		try {
 			recvAddr = InetAddress.getByName(receiverIP);
 			transAddr = InetAddress.getByName(transmitterIP);
@@ -57,15 +85,38 @@ public class Network {
             while(true)
             {
                 sock.receive(incoming);
+                
                 byte[] data = incoming.getData();
+                
+                try{
+                ByteArrayInputStream in = new ByteArrayInputStream(data);
+                ObjectInputStream is = new ObjectInputStream(in);
+
+                Packet packet = (Packet)is.readObject();
+                
+                echo(packet.data);
+                
+                //should this be in a while loop?
+                ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
+                ObjectOutput oos = new ObjectOutputStream(baos);
+                
+                oos.flush();
+                oos.writeObject(packet);
+                oos.flush();
+                byte[] dataObject = baos.toByteArray();
+
+                DatagramPacket outgoing = new DatagramPacket(dataObject, dataObject.length, recvAddr, receiverPort);
+                
                 String s = new String(data, 0, incoming.getLength());
-                 
+                transAddr = incoming.getAddress();
+//                 
                 //echo the details of incoming data - client ip : client port - client message
                 //echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
                 echo("sending from transmitter to receiver");
                 
                 //send to receiver
-                DatagramPacket outgoing = new DatagramPacket(s.getBytes(), s.getBytes().length, recvAddr, receiverPort);
+                //DatagramPacket outgoing = new DatagramPacket(s.getBytes(), s.getBytes().length, recvAddr, receiverPort);
+                
                 sock.send(outgoing);
                 
                 //wait for reply
@@ -79,6 +130,10 @@ public class Network {
                 DatagramPacket dp = new DatagramPacket(s.getBytes() , s.getBytes().length , incoming.getAddress() , incoming.getPort());
                 sock.send(dp);
                 echo("sending ACK to transmitter");
+                
+                }catch(Exception e){
+                	e.printStackTrace();
+                }      
             }
         }
          
