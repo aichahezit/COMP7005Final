@@ -5,6 +5,7 @@ public class Receiver {
     public static void main(String args[])
     {
         DatagramSocket sock = null;
+        int expectedDup = 0;
          
         try
         {
@@ -36,32 +37,47 @@ public class Receiver {
 					e.printStackTrace();
 				}
                 
-                echo(	"Packet Received\n==========\nPacket Type: " + packet.PacketType + 
-                		"\nSeqNum: " + packet.SeqNum +
-                		"\nPayloadLen: " + packet.PayloadLen +
-                		"\nData: " + packet.data +
-                		"\nWindowSize: " + packet.WindowSize +
-                		"\nAckNum: " + packet.AckNum);
+                //is.close();
+                
+                if(packet.DuplicateCheck == expectedDup){
+	                echo(	"Packet Received\n==========\n" +
+	                		"Duplicate Check: " + packet.DuplicateCheck + 
+	                		"\nPacket Type: " + packet.PacketType + 
+	                		"\nSeqNum: " + packet.SeqNum +
+	                		"\nPayloadLen: " + packet.PayloadLen +
+	                		"\nData: " + packet.data +
+	                		"\nWindowSize: " + packet.WindowSize +
+	                		"\nAckNum: " + packet.AckNum);
+                }else{
+                	echo("Wrong Duplicate Check Number. Expected: " + expectedDup + " Received: " + packet.DuplicateCheck);
+                }
                 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
                 ObjectOutput oos = new ObjectOutputStream(baos);
                 
                 String message = "ACK packet";
-                Packet ACKpacket = new Packet(1, 0 + message.length(), message.length(), message, 5, 0);
+                Packet ACKpacket = new Packet(expectedDup, 1, 0 + message.length(), message.length(), message, 5, packet.SeqNum);
                
                 oos.flush();
                 oos.writeObject(ACKpacket);
-                oos.flush();
+                //oos.flush();
                 byte[] dataObject = baos.toByteArray();
 
                 DatagramPacket dp = new DatagramPacket(dataObject, dataObject.length, incoming.getAddress(), incoming.getPort());
-                
+                                
                 // Send the packet
                 sock.send(dp);
                 
                 //close input and output streams
-                oos.close();
-                is.close();
+                //oos.close();
+                //is.close();
+                
+                //handles number change for duplicate handling
+                if(expectedDup == 0){
+                	expectedDup = 1;
+                }else{
+                	expectedDup = 0;
+                }
             }
         }
          

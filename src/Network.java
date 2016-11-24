@@ -121,9 +121,12 @@ public class Network {
 	                ByteArrayOutputStream baos2 = new ByteArrayOutputStream(5000);
 	                ObjectOutput oos2 = new ObjectOutputStream(baos2);
 	                
-	                oos2.flush();
+	                //oos2.flush();
 	                oos2.writeObject(ACKpacket);
-	                oos2.flush();
+	                //oos2.flush();
+	                
+	                //oos2.close();
+	                
 	                byte[] ACKdataObject = baos2.toByteArray();
 	
 	                DatagramPacket outgoingACK = new DatagramPacket(ACKdataObject, ACKdataObject.length, incoming.getAddress() , incoming.getPort());
@@ -132,6 +135,7 @@ public class Network {
 	                sock.send(outgoingACK);
 	                oos2.close();
 	                is2.close();
+	                
 	                echo("sending ACK to transmitter");
                 
                 }catch(Exception e){
