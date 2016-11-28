@@ -8,8 +8,7 @@ public class Packet implements java.io.Serializable {
 	public int WindowSize;
 	public int AckNum;
 	
-	public Packet(int DuplicateCheck, int PacketType, int SeqNum, int PayloadLen, String data, int WindowSize, int AckNum){
-		this.DuplicateCheck = DuplicateCheck;
+	public Packet(int PacketType, int SeqNum, int PayloadLen, String data, int WindowSize, int AckNum){
 		this.PacketType = PacketType;
 		this.SeqNum = SeqNum;
 		this.PayloadLen = PayloadLen;
