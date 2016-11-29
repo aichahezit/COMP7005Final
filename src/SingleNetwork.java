@@ -35,22 +35,23 @@ public class SingleNetwork {
 			String line = bufferedReader.readLine();
 						
 			//transmitter line
-			line = bufferedReader.readLine();
+			//line = bufferedReader.readLine();
 						
 			String[] splitted = line.split("-");
-			transmitterIP = splitted[0];
-			transmitterPort = Integer.parseInt(splitted[1]);
 			
-			echo("Transmitter IP: " + splitted[0] + " Port: " + splitted[1]);
+			transmitterIP = splitted[1];
+			transmitterPort = Integer.parseInt(splitted[2]);
 			
-			//read receiver config info
-			line = bufferedReader.readLine();
-						
-			splitted = line.split("-");
-			receiverIP = splitted[0];
-			receiverPort = Integer.parseInt(splitted[1]);
+			echo("Transmitter IP: " + splitted[1] + " Port: " + splitted[2]);
 			
-			echo("Receiver IP: " + splitted[0] + " Port: " + splitted[1]);
+//			//read receiver config info
+//			line = bufferedReader.readLine();
+//						
+//			splitted = line.split("-");
+			receiverIP = splitted[3];
+			receiverPort = Integer.parseInt(splitted[4]);
+			
+			echo("Receiver IP: " + splitted[3] + " Port: " + splitted[4]);
 			
 			fileReader.close();
 
@@ -93,6 +94,10 @@ public class SingleNetwork {
             echo("Network socket created. Waiting for incoming data...");
             
             double currentBER = 0;
+//            
+//            File log = new File("networkLog.txt");
+//            FileWriter fw = new FileWriter(log.getAbsoluteFile());
+//    		BufferedWriter bw = new BufferedWriter(fw);
              
             //communication loop
             while(true)
@@ -101,8 +106,8 @@ public class SingleNetwork {
                 
                 byte[] data = incoming.getData();
                 
-                echo("\nTransmission Round");
-                echo("========================");
+                echo("\nTransmission Round\n========================");
+//                bw.write("\nTransmission Round\n========================");
                 
                 try{
                 	//create input stream to receive from Host 1
@@ -114,6 +119,7 @@ public class SingleNetwork {
 	                try{
 	                	currentBER = (double)errors/(double)totalPacketsSent;
 		                echo("Total Packets Sent: " + totalPacketsSent + " Errors: " + errors + " Current BER: " + currentBER);
+//		                bw.write("Total Packets Sent: " + totalPacketsSent + " Errors: " + errors + " Current BER: " + currentBER);
 	                }catch(Exception e){}
 	                
 	                
@@ -135,6 +141,7 @@ public class SingleNetwork {
 		                //send to receiver   
 		                if(dropPacket == true){
 		                	echo("\n!!! Dropped a data packet. !!!\n");
+//		                	bw.write("\n!!! Dropped a data packet. !!!\n");
 		                	errors++;
 		                	continue;
 		                }
@@ -157,6 +164,7 @@ public class SingleNetwork {
 	                transAddr = incoming.getAddress();
 	
 	                echo("Sending data packet from TRANSMITTER to RECEIVER");
+//	                bw.write("Sending data packet from TRANSMITTER to RECEIVER");
 	                
                 	sock.send(outgoing);
 	                oos.close();
@@ -183,11 +191,13 @@ public class SingleNetwork {
 	                //send to receiver   
 	                if(dropPacket == true){
 	                	echo("\n!!! Dropped an ACK. !!!\n");
+//	                	bw.write("\n!!! Dropped an ACK. !!!\n");
 	                	errors++;
 	                	continue;
 	                }
 	                
 	                echo("Receiving ACK from RECEIVER");
+//	                bw.write("Receiving ACK from RECEIVER");
 	                sock.receive(outgoing);
 	                data = outgoing.getData();
 	                
@@ -213,6 +223,9 @@ public class SingleNetwork {
 	                is2.close();
 	                
 	                echo("Sending ACK to TRANSMITTER.");
+//	                bw.write("Sending ACK to TRANSMITTER.");
+	                
+//	                bw.close();
                 
                 }catch(Exception e){
                 	e.printStackTrace();

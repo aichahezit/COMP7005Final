@@ -1,0 +1,124 @@
+
+Packets to send: 6
+
+Packets sent:0
+
+Packet Sent
+==========
+Packet Type: DATA
+SeqNum: 36
+PayloadLen: 36
+Data: Long message sending data with SEQ 0
+WindowSize: 1
+AckNum: 0
+
+Packet Received
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 36
+Packets sent:1
+
+Packet Sent
+==========
+Packet Type: DATA
+SeqNum: 73
+PayloadLen: 37
+Data: Long message sending data with SEQ 36
+WindowSize: 1
+AckNum: 0
+
+Packet Received
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 73
+Packets sent:2
+
+Packet Sent
+==========
+Packet Type: DATA
+SeqNum: 110
+PayloadLen: 37
+Data: Long message sending data with SEQ 73
+WindowSize: 1
+AckNum: 0
+
+!!! TIMEOUT !!!
+Resending packet...
+
+
+Packet Sent
+==========
+Packet Type: DATA
+SeqNum: 110
+PayloadLen: 37
+Data: Long message sending data with SEQ 73
+WindowSize: 1
+AckNum: 0
+
+!!! TIMEOUT !!!
+Resending packet...
+
+
+Packet Sent
+==========
+Packet Type: DATA
+SeqNum: 110
+PayloadLen: 37
+Data: Long message sending data with SEQ 73
+WindowSize: 1
+AckNum: 0
+
+Packet Received
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 110
+Packets sent:5
+
+Packet Sent
+==========
+Packet Type: DATA
+SeqNum: 148
+PayloadLen: 38
+Data: Long message sending data with SEQ 110
+WindowSize: 1
+AckNum: 0
+
+Packet Received
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 148
+!!! EOT PACKET SENT !!!
+
+Packet Sent
+==========
+Packet Type: EOT
+SeqNum: 182
+PayloadLen: 34
+Data: This is the EOT Packet being sent.
+WindowSize: 1
+AckNum: 0
+
+Packet Received
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 182

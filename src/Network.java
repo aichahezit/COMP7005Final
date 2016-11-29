@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.Random;
 
 /* TODO:
  * 
@@ -11,12 +12,15 @@ public class Network {
 	public static void main(String args[])
     {
         DatagramSocket sock = null;
-    	int BER;
-    	int avgDelay;
     	String receiverIP = "127.0.0.1";
     	String transmitterIP = "127.0.0.1";
     	int receiverPort = 7778, transmitterPort = 0;
     	InetAddress recvAddr = null, transAddr = null;
+    	
+    	int totalPacketsSent = 0;
+    	int errors = 0;
+    	double BER = 0.5;
+    	int avgDelay = 0;
     	
 //    	try {
 //    		
@@ -83,6 +87,32 @@ public class Network {
 	                
 	                echo(packet.data);
 	                
+	                int currentBER = 0;
+	                
+	                try{
+	                	currentBER = errors/totalPacketsSent;
+	                }catch(Exception e){}
+	                
+	                boolean dropPacket = false;
+	                
+	                if(currentBER != BER){
+	                	//random number generator based on percentage?
+	                	double percentage = BER - currentBER;
+	                	Random rn = new Random();
+	                	int randomNum = rn.nextInt(100);
+	                	
+	                	if(randomNum <= (percentage * 100)){
+	                		//drop packet
+	                		dropPacket = true;	
+	                	}
+	                }
+	                
+	                //send to receiver   
+	                if(dropPacket == true){
+	                	Packet errorPack = new Packet(0,0,0,0,"This packet has been lost please ignore",0,0);
+	                	packet = errorPack;
+	                }
+	                
 	                //create output stream to send to Host 2
 	                ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
 	                ObjectOutput oos = new ObjectOutputStream(baos);
@@ -99,10 +129,11 @@ public class Network {
 	
 	                echo("sending from transmitter to receiver");
 	                
-	                //send to receiver         
-	                sock.send(outgoing);
+                	sock.send(outgoing);
 	                oos.close();
 	                is.close();
+	                
+	                totalPacketsSent++;
 	                
 	                //!!!!!!!!!//
 	                

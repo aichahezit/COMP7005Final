@@ -26,7 +26,8 @@ public class SingleTransmitter {
         String networkIP = "";
         int packetstoSend = 0;
         int packetsSent = 0;
-         
+        
+		
         BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
          
     	try {
@@ -38,8 +39,10 @@ public class SingleTransmitter {
 			//read transmitter config info
 			
 			String line = bufferedReader.readLine();
+			
+			String[] splitted = line.split("-");
 						
-			networkIP = line;
+			networkIP = splitted[0];
 			
 			echo(networkIP);
 			
@@ -58,13 +61,19 @@ public class SingleTransmitter {
             echo("Are you sending? (y/n): ");
             s = (String)cin.readLine();
             
+            File log = new File("transmitterLog.txt");
+            FileWriter fw = new FileWriter(log.getAbsoluteFile());
+    		BufferedWriter bw = new BufferedWriter(fw);
+            
             if(s.equals("y")){
             	
             	int sequenceTracker = 0;
             	Packet savedPacket = null;
             	Random rn = new Random();
             	packetstoSend = rn.nextInt(100) + 1;
+            	
             	echo("\nPackets to send: " + packetstoSend + "\n");
+            	bw.write("\nPackets to send: " + packetstoSend + "\n");
             	
                 //while there's still shit to send
                 while(dataToSend){           
@@ -80,6 +89,8 @@ public class SingleTransmitter {
 	                    if(savedPacket == null){
 	                    	if(packetsSent < packetstoSend){
 	                    		echo("\nPackets sent:" + packetsSent);
+	                        	bw.write("\nPackets sent:" + packetsSent);
+	                    		
 	                    		packet = new Packet(DATA_PACKET, sequenceTracker + message.length(), message.length(), message, WINDOW_SIZE, 0);
 	                    		sequenceTracker += message.length();
 	                    	}else{
@@ -87,6 +98,7 @@ public class SingleTransmitter {
 	                    		packet = new Packet(EOT_PACKET, sequenceTracker + message.length(), message.length(), message, WINDOW_SIZE, 0);
 	                    		sequenceTracker += message.length();
 	                    		echo("\n!!! EOT PACKET SENT !!!");
+	                    		bw.write("\n!!! EOT PACKET SENT !!!");
 	                    		dataToSend = false;
 	                    	}
 	                    }else{
@@ -102,23 +114,33 @@ public class SingleTransmitter {
 	                    DatagramPacket dp = new DatagramPacket(dataObject, dataObject.length, host, port);
 	                    
 	                    //create timeout
-	                    sock.setSoTimeout(3000);
+	                    sock.setSoTimeout(2000);
 	                    
 	                    // Send the packet
 	                    sock.send(dp);
 	                    packetsSent++;
 	                    
 	                    echo("\nPacket Sent\n==========");
+	                    bw.write("\n\nPacket Sent\n==========\n");
 	                    
 	                    if(packet.PacketType == 0){
 	                    	echo("Packet Type: DATA");
+		                    bw.write("Packet Type: DATA");
 	                    }else if(packet.PacketType == 1){
 	                    	echo("Packet Type: ACK");
+	                    	bw.write("Packet Type: ACK");
 	                    }else if(packet.PacketType == 2){
 	                    	echo("Packet Type: EOT");
+	                    	bw.write("Packet Type: EOT");
 	                    }
 	                    
 	                    echo(   "SeqNum: " + packet.SeqNum +
+	                    		"\nPayloadLen: " + packet.PayloadLen +
+	                    		"\nData: " + packet.data +
+	                    		"\nWindowSize: " + packet.WindowSize +
+	                    		"\nAckNum: " + packet.AckNum);
+	                    
+	                    bw.write("\nSeqNum: " + packet.SeqNum +
 	                    		"\nPayloadLen: " + packet.PayloadLen +
 	                    		"\nData: " + packet.data +
 	                    		"\nWindowSize: " + packet.WindowSize +
@@ -135,7 +157,8 @@ public class SingleTransmitter {
                   	try{
                   		sock.receive(reply);
                   	}catch(SocketTimeoutException e){
-                  		echo("\n!!! TIMOUT !!!\nResending packet...");
+                  		echo("\n!!! TIMEOUT !!!\nResending packet...");
+                  		bw.write("\n\n!!! TIMEOUT !!!\nResending packet...\n");
                   		savedPacket = packet;
                   		continue;
                   	}
@@ -153,13 +176,17 @@ public class SingleTransmitter {
     				}
                            
                     echo("\nPacket Received\n==========");
+                    bw.write("\n\nPacket Received\n==========\n");
                     
                     if(ACKpacket.PacketType == 0){
                     	echo("Packet Type: DATA");
+                    	bw.write("Packet Type: DATA");
                     }else if(ACKpacket.PacketType == 1){
                     	echo("Packet Type: ACK");
+                    	bw.write("Packet Type: ACK");
                     }else if(ACKpacket.PacketType == 2){
                     	echo("Packet Type: EOT");
+                    	bw.write("Packet Type: EOT");
                     }
                     
                     echo(   "SeqNum: " + ACKpacket.SeqNum +
@@ -167,8 +194,16 @@ public class SingleTransmitter {
                     		"\nData: " + ACKpacket.data +
                     		"\nWindowSize: " + ACKpacket.WindowSize +
                     		"\nAckNum: " + ACKpacket.AckNum);
+                    
+                    bw.write("\nSeqNum: " + ACKpacket.SeqNum +
+                    		"\nPayloadLen: " + ACKpacket.PayloadLen +
+                    		"\nData: " + ACKpacket.data +
+                    		"\nWindowSize: " + ACKpacket.WindowSize +
+                    		"\nAckNum: " + ACKpacket.AckNum);
 
-                }}else if(s.equals("n")){
+                }
+                bw.close();
+            }else if(s.equals("n")){
             	echo("TODO: become receiver");
             	//do we even need to do this if we use a config file?
             }

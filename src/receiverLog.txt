@@ -1,0 +1,352 @@
+Server socket created. Waiting for incoming data...
+
+Packet Received
+==========
+
+Packet Type: DATA
+SeqNum: 36
+PayloadLen: 36
+Data: Long message sending data with SEQ 0
+WindowSize: 1
+AckNum: 0
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 36
+Packet Received
+==========
+
+Packet Type: DATA
+SeqNum: 73
+PayloadLen: 37
+Data: Long message sending data with SEQ 36
+WindowSize: 1
+AckNum: 0
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 73
+!!! TIMOUT !!!
+Resending ACK...
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 73
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 73
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 10
+Packet Received
+==========
+
+Packet Type: DATA
+SeqNum: 110
+PayloadLen: 37
+Data: Long message sending data with SEQ 73
+WindowSize: 1
+AckNum: 0
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 110
+Packet Received
+==========
+
+Packet Type: DATA
+SeqNum: 148
+PayloadLen: 38
+Data: Long message sending data with SEQ 110
+WindowSize: 1
+AckNum: 0
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 148
+Packet Received
+==========
+
+Packet Type: EOT
+SeqNum: 182
+PayloadLen: 34
+Data: This is the EOT Packet being sent.
+WindowSize: 1
+AckNum: 0
+Packet Sent
+==========
+Packet Type: ACK
+SeqNum: 10
+PayloadLen: 10
+Data: ACK packet
+WindowSize: 1
+AckNum: 182

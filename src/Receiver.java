@@ -2,6 +2,12 @@ import java.io.*;
 import java.net.*;
 
 public class Receiver {
+	
+	static final int 	DATA_PACKET = 0;
+	static final int 	ACK_PACKET 	= 1;
+	static final int	EOT_PACKET 	= 2;
+	static final int 	WINDOW_SIZE = 5;
+	
     public static void main(String args[])
     {
         DatagramSocket sock = null;
@@ -52,12 +58,19 @@ public class Receiver {
                 	echo("Wrong Duplicate Check Number. Expected: " + expectedDup + " Received: " + packet.DuplicateCheck);
                 }
                 
+                
                 ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
                 ObjectOutput oos = new ObjectOutputStream(baos);
                 
-                String message = "ACK packet";
-                Packet ACKpacket = new Packet(expectedDup, 1, 0 + message.length(), message.length(), message, 5, packet.SeqNum);
-               
+                Packet ACKpacket = null;
+                
+                if(packet.data.equals("This packet has been lost please ignore")){
+                	echo("ENCOUNTERED LOST PACKET\n");
+                	ACKpacket = new Packet(0,0,0,0,"This is an empty ACK for a lost packet",0,0);
+                }else{
+	                String message = "ACK packet";
+	                ACKpacket = new Packet(expectedDup, ACK_PACKET, 0 + message.length(), message.length(), message, WINDOW_SIZE, packet.SeqNum);
+                }
                 oos.flush();
                 oos.writeObject(ACKpacket);
                 //oos.flush();

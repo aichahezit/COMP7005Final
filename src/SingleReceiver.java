@@ -26,8 +26,13 @@ public class SingleReceiver {
             
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
             
+            File log = new File("receiverLog.txt");
+            FileWriter fw = new FileWriter(log.getAbsoluteFile());
+    		BufferedWriter bw = new BufferedWriter(fw);
+            
             //2. Wait for an incoming data
             echo("Server socket created. Waiting for incoming data...");
+            bw.write("Server socket created. Waiting for incoming data...\n");
              
             //communication loop
             while(dataToSend)
@@ -49,13 +54,17 @@ public class SingleReceiver {
 				}
 	            
 	            echo("\nPacket Received\n==========");
+	            bw.write("\nPacket Received\n==========");
                 
                 if(packet.PacketType == 0){
                 	echo("Packet Type: DATA");
+                	bw.write("\nPacket Type: DATA");
                 }else if(packet.PacketType == 1){
                 	echo("Packet Type: ACK");
+                	bw.write("\nPacket Type: ACK");
                 }else if(packet.PacketType == 2){
                 	echo("Packet Type: EOT");
+                	bw.write("\nPacket Type: EOT");
                 }
                 
                 echo(   "SeqNum: " + packet.SeqNum +
@@ -63,6 +72,12 @@ public class SingleReceiver {
                 		"\nData: " + packet.data +
                 		"\nWindowSize: " + packet.WindowSize +
                 		"\nAckNum: " + packet.AckNum);
+                
+                bw.write("\nSeqNum: " + packet.SeqNum +
+                		"\nPayloadLen: " + packet.PayloadLen +
+                		"\nData: " + packet.data +
+                		"\nWindowSize: " + packet.WindowSize +
+                		"\nAckNum: " + packet.AckNum + "\n");
 	            
 	            if(packet.PacketType == EOT_PACKET){
 	            	dataToSend = false;
@@ -70,6 +85,7 @@ public class SingleReceiver {
                 
             	}catch(SocketTimeoutException e){
               		echo("\n!!! TIMOUT !!!\nResending ACK...");
+              		bw.write("\n!!! TIMOUT !!!\nResending ACK...");
             	}
                 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
@@ -88,13 +104,17 @@ public class SingleReceiver {
                 DatagramPacket dp = new DatagramPacket(dataObject, dataObject.length, incoming.getAddress(), incoming.getPort());                                
 	            
 	            echo("\nPacket Sent\n==========");
+	            bw.write("\nPacket Sent\n==========\n");
                 
                 if(ACKpacket.PacketType == 0){
                 	echo("Packet Type: DATA");
+                	bw.write("Packet Type: DATA\n");
                 }else if(ACKpacket.PacketType == 1){
                 	echo("Packet Type: ACK");
+                	bw.write("Packet Type: ACK\n");
                 }else if(ACKpacket.PacketType == 2){
                 	echo("Packet Type: EOT");
+                	bw.write("Packet Type: EOT\n");
                 }
                 
                 echo(   "SeqNum: " + ACKpacket.SeqNum +
@@ -103,9 +123,16 @@ public class SingleReceiver {
                 		"\nWindowSize: " + ACKpacket.WindowSize +
                 		"\nAckNum: " + ACKpacket.AckNum);
                 
+                bw.write("SeqNum: " + ACKpacket.SeqNum +
+                		"\nPayloadLen: " + ACKpacket.PayloadLen +
+                		"\nData: " + ACKpacket.data +
+                		"\nWindowSize: " + ACKpacket.WindowSize +
+                		"\nAckNum: " + ACKpacket.AckNum);
+                
                 // Send the packet
                 sock.send(dp);
             }
+            bw.close();
         }
          
         catch(IOException e)
